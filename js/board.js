@@ -1,12 +1,19 @@
 // console.log('board.js');
-var boardSize = [10, 10];
+var boardRows = 10;
+var boardColumns = 10;
 // -1 = bomb
 // 0 through 8 = clear tile
 var tileValuesArr = [[],[]];
 var board = $('#board');
-for(var i = 0; i < boardSize[0]; i++){ //x axis
-  // appending same tile to board over and over, want to append a NEW tile for each boardSize
 
-  $('<div>', {class: 'tile', id: i}).appendTo('#board');
+// for every boardRows[x][], create a row
+//   in every for create
+
+for(var i = 0; i < boardRows; i++){ //X axis
+    $('<div>', { class: ('row' + i) }).appendTo('#board');
+    for(var j = 0; j < boardColumns; j++){
+      //asign id that is a string of i + j
+      $('<div>', { class: 'tile', id: ("" + i + j) } ).appendTo('.row' + i);
+    }
 
 }
