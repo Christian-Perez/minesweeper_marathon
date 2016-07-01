@@ -12,3 +12,5 @@ whenever a game is started, the player is guaranteed to lose, but who can last t
 
 ##Tools Used In Development
 Minesweeper Marathon is built from the ground up using HTML, CSS, Vanilla Javascript for game logic and Jquery for animations.
+
+<a href="" rel="some text"><img src="/path/to/file" alt="" /></a>
