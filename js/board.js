@@ -1,54 +1,70 @@
-// console.log('board.js');
+
+var board = $('#board');
 var boardRows = 10;
 var boardColumns = 10;
+// ** FIX STYLES TO DISPLAY BOARDS APPRORIATELY BASED ON ROWS/COLUMNS **
 // -1 = bomb
 // 0 through 8 = clear tile
-var tileValuesArr = [[],[]];
-var board = $('#board');
+function makeAxisStr(num){
+  if(num < 10){
+    return ( '0' + num )
+  }else{
+    return ('' + num )
+  }
+} // makeAxisStr(10)
 
-
-// ** ** **
-// ** for support of board greater than 10 tiles in length..
-//supports number < 99
-// function makeTileId(length){
-//
-//   var tileId = '' + length
-//   function makeAxis(){
-//     if(length < 9){
-//       var section = ('0' + length ) ;
-//     }else{
-//       var section = ('' + length ) ;
-//     }
-//     // console.log(section);
-//     return(section);
-//   }
-//   // return ('' + makeAxis(boardRows) + makeAxis(boardColumns);
-//   // console.log(makeAxis(length));
-//   return("" + length);
-// }
-// makeTileId(boardRows);
-// ** ** **
-
-
-
-for(var i = 0; i < boardRows; i++){ //X axis
-    $('<div>', { class: ('row' + i) }).appendTo('#board');
-    for(var j = 0; j < boardColumns; j++){
-      //asign id that is a string of i + j
-      var $divTile = $('<div>', { class: 'tile', id: ("" + i + j), text: 0 } );
-      $divTile.click(function(){
-        // console.log($(this).id);
-        $(this).css('background-color', 'orange')
-        // console.log( 'before: ' + $(this).html() );
-        $(this).html('koala')
-        console.log( $(this).attr('id') )
-        // console.log( 'after: ' + $(this).html() );
-      })
-      $divTile.appendTo('.row' + i);
-
-      // ADD EVENT LISTENER
-      // RETURN ID VALUES OF ALL SURROUNDING TILES
-      // CHANGE STYLE OF THOSE tiles
-      // $('<div>', { class: 'tile', id: (makeTileId()), text: 0 } ).appendTo('.row' + i);
-    }
+function makeTileId(row, col){ // max board size 100x100
+  console.log( makeAxisStr(row) + makeAxisStr(col) )
+  return makeAxisStr(row) + makeAxisStr(col)
 }
+
+function makeBoard(){
+for(var row = 0; row < boardRows; row++){ // ROW
+    $('<div>', { id: ('row' + row), class: 'row' }).appendTo('#board');
+    for(var column = 0; column < boardColumns; column++){ // COLUMN
+      //asign id that is a string of i + // in the format rrww /
+
+      var $divTile = $('<div>', { class: 'tile', id: (maketileId(10, 0)), text: 0 } );
+      $divTile.click(function(){
+        // MAKE BOMB
+        $(this).css('background-color', 'orange')
+        // if()
+        $(this).html('-1')
+        var $idStr = $(this).attr('id')
+        var $idNum = parseInt( $idStr )
+        // var bombsRowNum = parseInt( $idStr.slice(0, 1) )
+        // var bombsColNum = parseInt( $idStr.slice(1) )
+
+        // .. FINISH MAKING IDs FIRST ..
+        function traverseBoard(col, row){
+          //* gets tile by id specified in params
+
+          function updateTiles(){ // in a spiral pattern
+            console.log('updateTils() returns: ' + $idStr)
+            //* update(++) each tile while going..
+              // up 1 row
+              // back 1 column
+              // down 2 rows
+              // forward 2 rows
+          } updateTiles()
+        } traverseBoard()
+        // .. .. .. .. ..
+
+        // OLD CODE..
+        // var targets = [[-1, -1], [1, 1]]
+        // var startIndex =
+        // for(var row = 0; row < targets.length; row++){
+        //   for(var column = 0; column < targets[row].length; column++){
+        //     var test = targets[row][column];
+        //   // colStart = bombsColNum += targets[row][1]
+        //   // colEnd = bombsColNum += targets[row][2]
+        //   }
+        // }
+
+        // var $idStr = $(this).attr('id')
+
+      })//click()
+      $divTile.appendTo('#row' + row);
+    }//COLUMN
+}//ROW
+}makeBoard()
