@@ -13,18 +13,16 @@ function makeAxisStr(num){
   }
 } // makeAxisStr(10)
 
-function makeTileId(row, col){ // max board size 100x100
-  console.log( makeAxisStr(row) + makeAxisStr(col) )
+function makeTileId(row, col){ // max board size 100x
+  // console.log( makeAxisStr(row) + makeAxisStr(col) )
   return makeAxisStr(row) + makeAxisStr(col)
 }
 
 function makeBoard(){
 for(var row = 0; row < boardRows; row++){ // ROW
     $('<div>', { id: ('row' + row), class: 'row' }).appendTo('#board');
-    for(var column = 0; column < boardColumns; column++){ // COLUMN
-      //asign id that is a string of i + // in the format rrww /
-
-      var $divTile = $('<div>', { class: 'tile', id: (maketileId(10, 0)), text: 0 } );
+    for(var col = 0; col < boardColumns; col++){ // COLUMN
+      var $divTile = $('<div>', { class: 'tile', id: makeTileId(row, col), text: 0 } );
       $divTile.click(function(){
         // MAKE BOMB
         $(this).css('background-color', 'orange')
