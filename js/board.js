@@ -7,68 +7,58 @@ var boardColumns = 10;
 // 0 through 8 = clear tile
 
 
-function makeTileId(row, col){ // max board size 100x
+function makeTileIdStr(row, col){ // max board size 100x
   function makeAxisStr(num){
     if(num < 10){
       return ( '0' + num )
     }else{
       return ( '' + num )
     }
-  } // makeAxisStr(10)
-  // console.log( makeAxisStr(row) + makeAxisStr(col) )
+  }
   return makeAxisStr(row) + makeAxisStr(col)
 }
 
-function makeBoard(){
+function makeBoardDOM(){
 for(var row = 0; row < boardRows; row++){ // ROW
   $('<div>', { id: ('row' + row), class: 'row' }).appendTo('#board');
   for(var col = 0; col < boardColumns; col++){ // COLUMN
-    var $divTile = $('<div>', { class: 'tile', id: makeTileId(row, col), text: 0 } );
+    var $divTile = $('<div>', { class: 'tile', id: makeTileIdStr(row, col), text: 0 } );
     $divTile.click(function(){
       // MAKE BOMB
       $(this).css('background-color', 'orange')
       $(this).html('-1')
-      var $idStr = $(this).attr('id')
-      // var $idNum = parseInt( $idStr )
-      var bombRowNum = parseInt( $idStr.slice(0, 2) )
-      var bombColNum = parseInt( $idStr.slice(2) )
-      // console.log('row: ' + bombRowNum + ', col: ' + bombColNum)
-      // console.log('tileId: ' + makeTileId(bombRowNum, bombColNum))
+      // store location of bomb blaced for updating surrounding tiles ()
+      var bombRowNum = parseInt( $(this).attr('id').slice(0, 2) )
+      var bombColNum = parseInt( $(this).attr('id').slice(2) )
+      // UPDATE SURROUNDING TILES
+      // define path
       var shiftSelection = {
         up: [-1, 0],
         down: [1, 0],
         left: [0, -1],
         right: [0, 1]
       }
-      var targetsPath = ['up', 'left', 'down', 'down', 'right', 'right', 'up', 'up']
-
-      function updateSurroundingTiles(row, col){
-        var targetsCol = bombColNum;
-        var targetsRow = bombRowNum;
-        for(var t = 0; t < targetsPath.length; t++){
-          var direction = targetsPath[t]
-            targetsRow += shiftSelection[direction][0]
-            targetsCol += shiftSelection[direction][1]
-          var targetId = makeTileId(targetsRow, targetsCol)
+      var pathToAllTargets = ['up', 'left', 'down', 'down', 'right', 'right', 'up', 'up']
+      // start path at the bomb
+        var targetColNum = bombColNum;
+        var targetRowNum = bombRowNum;
+        // walk the path
+        for(var t = 0; t < pathToAllTargets.length; t++){
+          var direction = pathToAllTargets[t]
+              targetRowNum += shiftSelection[direction][0]
+              targetColNum += shiftSelection[direction][1]
+          var targetId = makeTileIdStr(targetRowNum, targetColNum)
           var $targetTile = $('#' + targetId);
 
-          // console.log(document.getElementById(targetId).innerHTML == '-1')
           if($targetTile.html() == '-1'){
-            // console.log( parseInt( $targetTile.html() ) )
             console.log(targetId)
           }else{
             $targetTile.css('background-color', 'purple')
             $targetTile.html(parseInt($targetTile.html()) + 1)
-
-
           }
-        }
-      } updateSurroundingTiles(bombRowNum, bombColNum)
-      // .. .. .. .. ..
-      // var $idStr = $(this).attr('id')
-
-    })//click()
+        } // for() pathToAllTargets
+    }) // click()
     $divTile.appendTo('#row' + row);
-  }//COLUMN
-}//ROW
-}makeBoard()
+  } // COLUMN
+} // ROW
+}makeBoardDOM()
