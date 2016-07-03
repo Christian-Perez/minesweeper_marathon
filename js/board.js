@@ -34,47 +34,32 @@ for(var row = 0; row < boardRows; row++){ // ROW
       var bombColNum = parseInt( $idStr.slice(2) )
       // console.log('row: ' + bombRowNum + ', col: ' + bombColNum)
       // console.log('tileId: ' + makeTileId(bombRowNum, bombColNum))
-      var tileCoordinates = {
+      var shiftFocus = {
         up: [-1, 0],
         down: [1, 0],
         left: [0, -1],
         right: [0, 1]
       }
-      var getTilePath = ['up', 'left', 'down', 'down', 'right', 'right', 'up', 'up']
+      var targetsPath = ['up', 'left', 'down', 'down', 'right', 'right', 'up', 'up']
+
+// *** for loop needs to update 'jumping off point so it's targeting relative to it's last element
+      function updateTile(id){ // in a spiral pattern
+        ;
+      }
       function getTiles(row, col){
-            // var nextTile = bombRowNum += adjacentTile.up
-            // console.log('row: ' + row + ' col: ' + col)
-            // console.log(adjacentTile.up[0])
-        // var nextTileCoordinates = makeTileId( (bombRowNum + tileCoordinates.up[0]), (bombColNum + tileCoordinates.up[1]) )
-        // console.log(nextTileCoordinates)
-        // for(){
+        var targetsCol = bombColNum;
+        var targetsRow = bombRowNum;
+        for(var t = 0; t < targetsPath.length; t++){
+          var direction = targetsPath[t]
+          targetsRow += shiftFocus[direction][0]
+          targetsCol += shiftFocus[direction][1]
+          var targetId = makeTileId(targetsRow, targetsCol)
 
-        // ** IN FOR LOOP ** <<
-        // get vertical
-        // get horozontal
-        // combine with maketileId()
-        // use id to target
-        // ** ** ** ** ** **
-        var direction = 'down'
-          // ** not targeting right number **
-          var targetsCol = (bombColNum + tileCoordinates[direction][1])
-          var targetsRow = (bombRowNum + tileCoordinates[direction][0])
-          // var targetsRow = (bombRowNum + tileCoordinates[ direction[1] ])
-          // console.log('bombRow: ' + bombRowNum)
-          // console.log(tileCoordinates[direction][0])
-          console.log(direction + '! > rowNum: ' + targetsRow + ', ' + '! > colNum: ' + targetsCol)
-            // makeTileId(tileCoordinates.up[0], tileCoordinates.up[1])
-            // console.log( 'row: ' + targetsRow + ' col: ' + targetsCol)
+            document.getElementById(targetId).style.backgroundColor = '#fff'
+        }
 
-        // }//for
-        // document.getElementById(nextTileCoordinates).style.backgroundColor = '#fff';
-        // $(('#'+ (bombRowNum + tileCoordinates.up[0]) + (bombColNum + tileCoordinates.up[1]) )).css('background-color', 'green')
-        function updateTiles(){ // in a spiral pattern
-          // console.log('updateTils() returns: ' + $idStr)
-        } updateTiles()
       } getTiles(bombRowNum, bombColNum)
       // .. .. .. .. ..
-
       // var $idStr = $(this).attr('id')
 
     })//click()
