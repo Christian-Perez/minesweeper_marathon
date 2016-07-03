@@ -29,12 +29,12 @@ for(var row = 0; row < boardRows; row++){ // ROW
       $(this).css('background-color', 'orange')
       $(this).html('-1')
       var $idStr = $(this).attr('id')
-      var $idNum = parseInt( $idStr )
+      // var $idNum = parseInt( $idStr )
       var bombRowNum = parseInt( $idStr.slice(0, 2) )
       var bombColNum = parseInt( $idStr.slice(2) )
       // console.log('row: ' + bombRowNum + ', col: ' + bombColNum)
       // console.log('tileId: ' + makeTileId(bombRowNum, bombColNum))
-      var shiftFocus = {
+      var shiftSelection = {
         up: [-1, 0],
         down: [1, 0],
         left: [0, -1],
@@ -42,23 +42,28 @@ for(var row = 0; row < boardRows; row++){ // ROW
       }
       var targetsPath = ['up', 'left', 'down', 'down', 'right', 'right', 'up', 'up']
 
-// *** for loop needs to update 'jumping off point so it's targeting relative to it's last element
-      function updateTile(id){ // in a spiral pattern
-        ;
-      }
-      function getTiles(row, col){
+      function updateSurroundingTiles(row, col){
         var targetsCol = bombColNum;
         var targetsRow = bombRowNum;
         for(var t = 0; t < targetsPath.length; t++){
           var direction = targetsPath[t]
-          targetsRow += shiftFocus[direction][0]
-          targetsCol += shiftFocus[direction][1]
+            targetsRow += shiftSelection[direction][0]
+            targetsCol += shiftSelection[direction][1]
           var targetId = makeTileId(targetsRow, targetsCol)
+          var $targetTile = $('#' + targetId);
 
-            document.getElementById(targetId).style.backgroundColor = '#fff'
+          // console.log(document.getElementById(targetId).innerHTML == '-1')
+          if($targetTile.html() == '-1'){
+            // console.log( parseInt( $targetTile.html() ) )
+            console.log(targetId)
+          }else{
+            $targetTile.css('background-color', 'purple')
+            $targetTile.html(parseInt($targetTile.html()) + 1)
+
+
+          }
         }
-
-      } getTiles(bombRowNum, bombColNum)
+      } updateSurroundingTiles(bombRowNum, bombColNum)
       // .. .. .. .. ..
       // var $idStr = $(this).attr('id')
 
