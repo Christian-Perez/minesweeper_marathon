@@ -2,10 +2,9 @@
 var board = $('#board');
 var boardRows = 10;
 var boardColumns = 10;
-// ** FIX STYLES TO DISPLAY BOARDS APPRORIATELY BASED ON ROWS/COLUMNS **
+
 // -1 = bomb
 // 0 through 8 = clear tile
-
 
 function makeTileIdStr(row, col){ // max board size 100x
   function makeAxisStr(num){
@@ -14,9 +13,9 @@ function makeTileIdStr(row, col){ // max board size 100x
     }else{
       return ( '' + num )
     }
-  }
+  } // makeAxisStr
   return makeAxisStr(row) + makeAxisStr(col)
-}
+} // makeTileIdStr
 
 function makeBoardDOM(){
 for(var row = 0; row < boardRows; row++){ // ROW
@@ -27,9 +26,17 @@ for(var row = 0; row < boardRows; row++){ // ROW
       // MAKE BOMB
       $(this).css('background-color', 'orange')
       $(this).html('-1')
+      var tileId = $(this).attr('id');
+      console.log(tileId)
+      makeIntoBomb( parseInt($(this).attr('id').slice(0, 2)), parseInt($(this).attr('id').slice(2)) )
+      function makeIntoBomb(row, col){
+
       // store location of bomb blaced for updating surrounding tiles ()
-      var bombRowNum = parseInt( $(this).attr('id').slice(0, 2) )
-      var bombColNum = parseInt( $(this).attr('id').slice(2) )
+      // var bombRowNum = parseInt( $(this).attr('id').slice(0, 2) )
+      // var bombColNum = parseInt( $(this).attr('id').slice(2) )
+      var bombRowNum = row
+      var bombColNum = col
+
       // UPDATE SURROUNDING TILES
       // define path
       var shiftSelection = {
@@ -56,7 +63,14 @@ for(var row = 0; row < boardRows; row++){ // ROW
             $targetTile.css('background-color', 'purple')
             $targetTile.html(parseInt($targetTile.html()) + 1)
           }
-        } // for() pathToAllTargets
+        } // for( pathToAllTargets )
+      }
+
+      // var bombRowNum = parseInt( $(this).attr('id').slice(0, 2) )
+      // var bombColNum = parseInt( $(this).attr('id').slice(2) )
+      // makeIntoBomb(parseInt( $(this).attr('id').slice(0, 2)), parseInt( $(this).attr('id').slice(2)){)
+
+
     }) // click()
     $divTile.appendTo('#row' + row);
   } // COLUMN
