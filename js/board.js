@@ -83,9 +83,11 @@ for(var row = 0; row < boardRows; row++){ // ROW
         console.log( 'clicked: ' + $(this).attr('id') + ', isBomb: ' + isBomb($(this)) )
         if( $(this).html() == '-1' ){ // is bomb
           $(this).addClass('tile-bomb')
+          alert( 'tile ' + $(this).attr('id') + ' is a bomb, you lose')
         } else if( $(this).html() == '0' ){ // is zero
           $(this).removeClass('tile-hidden')
           $(this).addClass('tile-' + parseInt($(this).html()) )
+          clearZero( $(this).attr('id') )
         } else { // is num between 1 & 8
           console.log( 'cell value is ' + $(this).html() )
           $(this).removeClass('tile-hidden')
