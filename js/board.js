@@ -2,7 +2,7 @@
 var board = $('#board');
 var boardRows = 10;
 var boardColumns = 10;
-var numOfBombs = 20;
+var numOfBombs = 10;
 
 function randomTileAxisNum(){
   // * has to adapt to different board sizes
@@ -22,8 +22,7 @@ function makeTileIdStr(row, col){ // max board size 100x
 } // makeTileIdStr(row, col)
 
 function makeIntoBomb(tileIdStr){
-  /// ? refactor to accept str or num ?
-  $('#' + tileIdStr).css('background-color', 'orange')
+  // $('#' + tileIdStr).css('background-color', 'orange')
   $('#' + tileIdStr).html('-1')
 
   var bombRowNum = parseInt(tileIdStr.slice(0, 2))
@@ -56,9 +55,10 @@ function makeIntoBomb(tileIdStr){
     var $targetTile = $('#' + targetId);
 
       if($targetTile.html() == '-1'){
-        console.log(targetId)
+        console.log('target found bomb @ ' + targetId)
       }else{
-        $targetTile.css('background-color', 'purple')
+        // $targetTile.css('background-color', 'purple')
+        // looks like it breaks, but it's a visual hiccup
         $targetTile.html(parseInt($targetTile.html()) + 1)
       }
     } // for( pathThroughTargets )
@@ -70,10 +70,6 @@ function isBomb(tileDOM){
   } else {
     return false
   }
-  // if(tileDOM){
-  //
-  // }
-
 }
 
 // function makeBoardDOM(){
@@ -82,9 +78,18 @@ for(var row = 0; row < boardRows; row++){ // ROW
   $('<div>', { id: ('row' + row), class: 'row' }).appendTo('#board');
 
   for(var col = 0; col < boardColumns; col++){ // COLUMN
-    var $divTile = $('<div>', { class: 'tile', id: makeTileIdStr(row, col), text: 0 } );
+    var $divTile = $('<div>', { class: 'tile tile-hidden', id: makeTileIdStr(row, col), text: 0 } );
       $divTile.click(function(){
         console.log( 'clicked: ' + $(this).attr('id') + ', isBomb: ' + isBomb($(this)) )
+        if( $(this).html() == '-1' ){
+          $(this).addClass('tile-bomb')
+        } else {
+          console.log( $(this).html() )
+          $(this).removeClass('tile-hidden')
+          $(this).addClass('tile-' + parseInt($(this).html()) )
+        }
+
+
         // makeIntoBomb( $(this).attr('id') )
       }) // $divTile.click
       $divTile.appendTo('#row' + row);
@@ -101,11 +106,13 @@ while(arrayOfBombs.length < numOfBombs){
     arrayOfBombs.push(newBombId)
     // console.log('pushed ' + newBombId)
   }
-  // console.log('arrayOfBombs: ' + arrayOfBombs.length)
+  console.log('arrayOfBombs: ' + arrayOfBombs.length)
 } // while(arrayOfBombs.length < numOfBombs)
 
 /// UTILIZE BOMBS ARR TO MAKE BOMBS
+console.log( 'before makeIntoBomb(arrayOfBombs) ' + arrayOfBombs)
 for(var b = 0; b < arrayOfBombs.length; b++){
   makeIntoBomb(arrayOfBombs[b])
+  console.log('made ' + arrayOfBombs[b] + ' into a bomb')
 }
 // } makeBoardDOM()

@@ -1,11 +1,15 @@
-body {
-  /*background-color: green;*/
-}
+
 #board {
   width: 600px;
   height: 600px;
 
-  background-color: rgb(80, 180, 80);
+  background-color: rgb(224, 224, 224);
+}
+.row{
+  display: block;
+  clear: left;
+
+  background-color: yellow;
 }
 .tile {
   float: left;
@@ -14,17 +18,42 @@ body {
   width: 58px;
   height: 58px;
 
-  background-color: rgb(80, 80, 180);
+  background-color: rgb(180, 180, 180);
   text-align: center;
   /*vertical-align: middle;*/
-  color: #fff;
+
 }
 .tile:hover {
-  background-color: rgb(100, 100, 200)
+  background-color: rgba(100, 100, 200, .2);
 }
-.row{
-  display: block;
-  clear: left;
-
-  background-color: yellow;
+.tile-hidden {
+  color: transparent;
+}
+.tile-bomb {
+  color: black;
+  background-color: rgb(163, 0, 0);
+}
+.tile-1 {
+  background-color: rgb(0, 150, 224);
+}
+.tile-2 {
+  background-color: rgb(20, 150, 204);
+}
+.tile-3 {
+  background-color: rgb(40, 150, 184);
+}
+.tile-4 {
+  background-color: rgb(60, 150, 164);
+}
+.tile-5 {
+  background-color: rgb(80, 150, 144);
+}
+.tile-6 {
+  background-color: rgb(100, 150, 124);
+}
+.tile-7 {
+  background-color: rgb(120, 150, 104);
+}
+.tile-8 {
+  background-color: rgb(140, 150, 84);
 }
