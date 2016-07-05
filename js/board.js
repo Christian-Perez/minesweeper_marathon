@@ -81,10 +81,13 @@ for(var row = 0; row < boardRows; row++){ // ROW
     var $divTile = $('<div>', { class: 'tile tile-hidden', id: makeTileIdStr(row, col), text: 0 } );
       $divTile.click(function(){
         console.log( 'clicked: ' + $(this).attr('id') + ', isBomb: ' + isBomb($(this)) )
-        if( $(this).html() == '-1' ){
+        if( $(this).html() == '-1' ){ // is bomb
           $(this).addClass('tile-bomb')
-        } else {
-          console.log( $(this).html() )
+        } else if( $(this).html() == '0' ){ // is zero
+          $(this).removeClass('tile-hidden')
+          $(this).addClass('tile-' + parseInt($(this).html()) )
+        } else { // is num between 1 & 8
+          console.log( 'cell value is ' + $(this).html() )
           $(this).removeClass('tile-hidden')
           $(this).addClass('tile-' + parseInt($(this).html()) )
         }
