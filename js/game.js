@@ -1,1 +1,2 @@
-console.log('game.js');
+
+// function traverseToTile(startTile, direction){}

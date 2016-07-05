@@ -49,13 +49,15 @@ function makeIntoBomb(tileIdStr){
   // walk the path
   for(var t = 0; t < path.length; t++){
     var direction = path[t]
+    // take step in direction 't' (target)
         targetRowNum += shift[direction][0]
         targetColNum += shift[direction][1]
+    // define tile to modify
     var targetId = makeTileIdStr(targetRowNum, targetColNum)
     var $targetTile = $('#' + targetId);
 
       if($targetTile.html() == '-1'){
-        console.log('target found bomb @ ' + targetId)
+        // console.log('target found bomb @ ' + targetId)
       }else{
         // $targetTile.css('background-color', 'purple')
         // looks like it breaks, but it's a visual hiccup
@@ -80,25 +82,27 @@ for(var row = 0; row < boardRows; row++){ // ROW
   for(var col = 0; col < boardColumns; col++){ // COLUMN
     var $divTile = $('<div>', { class: 'tile tile-hidden', id: makeTileIdStr(row, col), text: 0 } );
       $divTile.click(function(){
-        console.log( 'clicked: ' + $(this).attr('id') + ', isBomb: ' + isBomb($(this)) )
+        // console.log( 'clicked: ' + $(this).attr('id') + ', isBomb: ' + isBomb($(this)) )
         if( $(this).html() == '-1' ){ // is bomb
+
           $(this).addClass('tile-bomb')
           alert( 'tile ' + $(this).attr('id') + ' is a bomb, you lose')
+
         } else if( $(this).html() == '0' ){ // is zero
+
           $(this).removeClass('tile-hidden')
           $(this).addClass('tile-' + parseInt($(this).html()) )
-          clearZero( $(this).attr('id') )
+          clearZeroTiles( $(this).attr('id') )
+
         } else { // is num between 1 & 8
           console.log( 'cell value is ' + $(this).html() )
           $(this).removeClass('tile-hidden')
           $(this).addClass('tile-' + parseInt($(this).html()) )
         }
-
-
-        // makeIntoBomb( $(this).attr('id') )
       }) // $divTile.click
       $divTile.appendTo('#row' + row);
   } // forEach( column )
+
 } // forEach( row )
 
 /// MAKE ARRAY OF UNIQUE BOMB IDs
@@ -111,13 +115,13 @@ while(arrayOfBombs.length < numOfBombs){
     arrayOfBombs.push(newBombId)
     // console.log('pushed ' + newBombId)
   }
-  console.log('arrayOfBombs: ' + arrayOfBombs.length)
+  // console.log('arrayOfBombs: ' + arrayOfBombs.length)
 } // while(arrayOfBombs.length < numOfBombs)
 
 /// UTILIZE BOMBS ARR TO MAKE BOMBS
-console.log( 'before makeIntoBomb(arrayOfBombs) ' + arrayOfBombs)
+// console.log( 'before makeIntoBomb(arrayOfBombs) ' + arrayOfBombs)
 for(var b = 0; b < arrayOfBombs.length; b++){
   makeIntoBomb(arrayOfBombs[b])
-  console.log('made ' + arrayOfBombs[b] + ' into a bomb')
+  // console.log('made ' + arrayOfBombs[b] + ' into a bomb')
 }
 // } makeBoardDOM()

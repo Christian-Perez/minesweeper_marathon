@@ -1,18 +1,45 @@
+body {
+  background-color: grey;
+}
+#gameWindow {
+  background-color: orange;
+  width: 100%;
+  text-align: center;
+  /*text-align: center;*/
+}
+#hud {
+  display: block;
+  background-color: purple;
+}
+/* HUD */
+.timer, #bomb-toggle {
+  display: inline-block;
+  margin: 5px 0 5px 0;
+}
+.timer {
+  width: 35%;
+  background-color: green;
+}
+#bomb-toggle {
+  width: 25%;
+}
+/* hud */
 
 #board {
-  width: 600px;
-  height: 600px;
 
+  display: inline-block;
+  width: 600px;
+  /*height: 600px;*/
+  /*width: 100%;*/
+  height: 100%;
   background-color: rgb(224, 224, 224);
+  padding: 1px;
 }
 .row{
-  display: block;
-  clear: left;
-
-  background-color: yellow;
+  display: inline-block;
 }
 .tile {
-  float: left;
+  display: inline-block;
   margin: 1px;
 
   width: 58px;
@@ -32,6 +59,9 @@
 .tile-bomb {
   color: black;
   background-color: rgb(163, 0, 0);
+}
+.tile-0 {
+  background-color: orange;
 }
 .tile-1 {
   background-color: rgb(0, 150, 224);
