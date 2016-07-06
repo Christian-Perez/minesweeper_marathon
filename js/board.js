@@ -104,28 +104,31 @@ function makeBoard(){
       var $divTile = $('<div>', { class: 'tile tile-hidden', id: makeTileIdStr(row, col), text: 0 } );
         $divTile.click(function(){
           if(flagToggle){
-            console.log('flag')
-            $(this).addClass('flagged')
-          } else {
+            if( $(this).hasClass('flagged') ){
+              $(this).removeClass('flagged')
+            } else{
+              $(this).addClass('flagged')
+            }
+          } else if( !$(this).hasClass('flagged') ){
             // console.log( 'clicked: ' + $(this).attr('id') + ', isBomb: ' + isBomb($(this)) )
-            if( $(this).html() == '-1' && !$(this).hasClass('flagged')){ // is bomb
+            if( $(this).html() == '-1' ){ // is bomb
               $(this).addClass('tile-bomb')
               alert( 'tile ' + $(this).attr('id') + ' is a bomb, you lose')
 
-            } else if( $(this).html() == '0' && !$(this).hasClass('flagged')){ // is zero
+            } else if( $(this).html() == '0' ){ // is zero
 
               $(this).removeClass('tile-hidden')
               $(this).addClass('tile-' + parseInt($(this).html()) )
               clearZeroTiles( $(this).attr('id') )
 
-            } else if( !$(this).hasClass('flagged') ){ // is num between 1 & 8
+            } else { // is num between 1 & 8
               console.log( 'cell value is ' + $(this).html() )
               $(this).removeClass('tile-hidden')
               $(this).addClass('tile-' + parseInt($(this).html()) )
-            } else {
-              alert('protected tile, toggle the flag selector and click this tile to disable protection')
             }
-          } // else(flagToggle)
+          } else {// if( !flagToggle )
+            console.log('this tile is protected?')
+          }
         }) // $divTile.click
         // $divTile.mousedown(function(clickType){
         //   console.log('mousedown firing')
