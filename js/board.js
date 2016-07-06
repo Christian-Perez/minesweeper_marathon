@@ -82,11 +82,38 @@ function clearZeroTiles(startTileIdStr){
   // update tilesLeftCounter
 }
 
+/// /// /// /// ///
+
+var stopwatchSeconds = 0;
+var stopwatch;
 function timer(string){
-  console.log('timer(string)')
-  // start
-  // stop
+  switch(string){
+    case 'start':
+      console.log('calling tick()')
+      stopwatch = setInterval(function(){ tick() }, 1000);
+      break;
+    case 'stop':
+      clearInterval(stopwatch);
+      break;
+    case 'reset':
+      stopwatchSeconds = 0;
+      $('#current-timer').html(stopwatchSeconds)
+      break;
+  } // switch
+} // timer(string)
+// // // // //
+// function tick(){
+//   setInterval(function(){ console.log('stopwatchSeconds') }, 1000);
+// }
+
+var tick = function(){
+    $('#current-timer').html(
+      ++stopwatchSeconds
+
+    );
 }
+
+/// /// /// /// ///
 
 function setRecord(num){
   console.log('setRecord(num)')
@@ -159,7 +186,6 @@ function makeBoard(){
               }
 
             } else { // is num between 1 & 8
-              console.log( 'cell value is ' + $(this).html() )
               $(this).removeClass('tile-hidden')
               $(this).addClass('tile-' + parseInt($(this).html()) )
               --tilesLeftCounter
