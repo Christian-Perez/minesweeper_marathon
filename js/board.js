@@ -2,7 +2,7 @@
 var board = $('#board');
 var boardRows = 10;
 var boardColumns = 10;
-var numOfBombs = 15;
+var numOfBombs = 98;
 var numOfNonBombs = (boardRows * boardColumns) - numOfBombs
 // var tilesToClear
 console.log('numOfBombs ' + numOfBombs)
@@ -89,11 +89,13 @@ var stopwatch;
 function timer(string){
   switch(string){
     case 'start':
+      alert('starting timer')
       console.log('calling tick()')
       stopwatch = setInterval(function(){ tick() }, 1000);
       break;
     case 'stop':
       clearInterval(stopwatch);
+      alert('stoping timer')
       break;
     case 'reset':
       stopwatchSeconds = 0;
@@ -106,12 +108,21 @@ function timer(string){
 //   setInterval(function(){ console.log('stopwatchSeconds') }, 1000);
 // }
 
-var tick = function(){
-    $('#current-timer').html(
-      ++stopwatchSeconds
-
-    );
-}
+function tick(){
+  ++stopwatchSeconds
+  function formatNum(num){
+    if(num < 10){
+      return ( '0' + num )
+    }else{
+      return ( '' + num )
+    }
+  }
+    var minutes = formatNum( Math.floor(stopwatchSeconds / 60) )
+    // console.log(minutes)
+    var seconds = formatNum( stopwatchSeconds % 60 )
+    // console.log(seconds)
+    $('#current-timer').html(minutes + ':' + seconds)
+  }
 
 /// /// /// /// ///
 
@@ -122,8 +133,7 @@ function setRecord(num){
 // MAKE BOARD
 function makeBoard(){
   $('<div>', {class: 'timer', id: 'current-timer', text: '00:00'}).appendTo('#board')
-  $('<div>', {
-    id: 'bomb-toggle',
+  $('<div>', {id: 'bomb-toggle',
     html: '<span id="tilesLeftCounter">' + numOfNonBombs + '</span> / <span id="flagsLeftCounter">' + numOfBombs + '</span>'
   }).appendTo('#board')
   $('<div>', {class: 'timer', id: 'record-time', text: '00:00'}).appendTo('#board')
@@ -147,8 +157,7 @@ function makeBoard(){
     } else {
       $('#toggle-flag-btn').addClass('flagged')
     }
-    console.log(flagToggle)
-  })
+  }) // click( #toggle-flag-btn )
 
   for(var row = 0; row < boardRows; row++){ // ROW
     $('<div>', { id: ('row' + row), class: 'row' }).appendTo('#board');
@@ -181,10 +190,6 @@ function makeBoard(){
 
               clearZeroTiles( $(this).attr('id') )
 
-              if(tilesLeftCounter < 1){
-                alert('you won! yay!!')
-              }
-
             } else { // is num between 1 & 8
               $(this).removeClass('tile-hidden')
               $(this).addClass('tile-' + parseInt($(this).html()) )
@@ -193,10 +198,9 @@ function makeBoard(){
 
               if(tilesLeftCounter < 1){
                 alert('you won! yay!!')
+                timer('stop')
               }
-
-            }
-
+            } // else // is num between 1 & 8
           } else {// if( !flagToggle ).. the tile IS flagged
             alert('this tile is protected, toggle the flag selector and select this tile to disable protection')
           }
@@ -222,4 +226,7 @@ function makeBoard(){
     makeIntoBomb(arrayOfBombs[b])
   }
   tilesToClear = numOfNonBombs
+
+  timer('start')
+  
 } makeBoard()

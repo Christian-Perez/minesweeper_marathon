@@ -68,6 +68,7 @@ body {
 }
 .tile-hidden {
   color: transparent;
+  color: black;
 }
 .tile-bomb {
   color: black;
