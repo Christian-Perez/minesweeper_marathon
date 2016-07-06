@@ -2,7 +2,7 @@
 var board = $('#board');
 var boardRows = 10;
 var boardColumns = 10;
-var numOfBombs = 10;
+var numOfBombs = 15;
 var numOfNonBombs = (boardRows * boardColumns) - numOfBombs
 // var tilesToClear
 console.log('numOfBombs ' + numOfBombs)
