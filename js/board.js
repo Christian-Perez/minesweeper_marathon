@@ -4,7 +4,8 @@ var boardRows = 10;
 var boardColumns = 10;
 var numOfBombs = 10;
 var numOfNonBombs = (boardRows * boardColumns) - numOfBombs
-var tilesToClear
+// var tilesToClear
+console.log('numOfBombs ' + numOfBombs)
 console.log('numOfNonBombs: ' + numOfNonBombs)
 
 function randomTileAxisNum(){
@@ -79,71 +80,76 @@ function isBomb(tileDOM){
 // MAKE BOARD
 function makeBoard(){
   $('<div>', {class: 'timer', id: 'current-timer', text: '00:00'}).appendTo('#board')
-  $('<div>', {id: 'bomb-toggle', text: '00'}).appendTo('#board')
+  $('<div>', {
+    id: 'bomb-toggle',
+    html: '<span id="tilesLeftCounter">' + numOfNonBombs + '</span> / <span id="flagsLeftCounter">' + numOfBombs + '</span>'
+  }).appendTo('#board')
   $('<div>', {class: 'timer', id: 'record-time', text: '00:00'}).appendTo('#board')
   $('<button>', {id: 'reset-btn', text: 'Reset'}).appendTo('#board')
   $('<button>', {id: 'toggle-flag-btn', text: 'toggle flag'}).appendTo('#board')
 
   //resetBoard()
   $('#reset-btn').click(function(){
-    console.log('reset button clicked')
     $('#board').empty()
     makeBoard()
   })
 
+  var tilesLeftCounter = numOfNonBombs;
+  var flagsLeftCounter = numOfBombs;
   var flagToggle = false
   $('#toggle-flag-btn').click(function(){
+    // change click behavior if toggle-flag-btn has been clicked
     flagToggle == true ? flagToggle = false : flagToggle = true
+    if( $(this).hasClass( 'flagged' ) ){
+      $('#toggle-flag-btn').removeClass('flagged')
+    } else {
+      $('#toggle-flag-btn').addClass('flagged')
+    }
     console.log(flagToggle)
   })
 
   for(var row = 0; row < boardRows; row++){ // ROW
     $('<div>', { id: ('row' + row), class: 'row' }).appendTo('#board');
-
     for(var col = 0; col < boardColumns; col++){ // COLUMN
       var $divTile = $('<div>', { class: 'tile tile-hidden', id: makeTileIdStr(row, col), text: 0 } );
+  /// FOR EVERY TILE ON THE BOARD...
         $divTile.click(function(){
           if(flagToggle){
             if( $(this).hasClass('flagged') ){
               $(this).removeClass('flagged')
+              flagsLeftCounter++
+
             } else{
               $(this).addClass('flagged')
+              flagsLeftCounter--
             }
+            $('#flagsLeftCounter').html(flagsLeftCounter)
+            console.log(flagsLeftCounter)
           } else if( !$(this).hasClass('flagged') ){
-            // console.log( 'clicked: ' + $(this).attr('id') + ', isBomb: ' + isBomb($(this)) )
+
             if( $(this).html() == '-1' ){ // is bomb
               $(this).addClass('tile-bomb')
+
               alert( 'tile ' + $(this).attr('id') + ' is a bomb, you lose')
-
             } else if( $(this).html() == '0' ){ // is zero
-
               $(this).removeClass('tile-hidden')
               $(this).addClass('tile-' + parseInt($(this).html()) )
-              clearZeroTiles( $(this).attr('id') )
 
+              clearZeroTiles( $(this).attr('id') )
             } else { // is num between 1 & 8
               console.log( 'cell value is ' + $(this).html() )
               $(this).removeClass('tile-hidden')
               $(this).addClass('tile-' + parseInt($(this).html()) )
+
             }
-          } else {// if( !flagToggle )
-            console.log('this tile is protected?')
+
+          } else {// if( !flagToggle ).. the tile IS flagged
+            alert('this tile is protected, toggle the flag selector and select this tile to disable protection')
           }
         }) // $divTile.click
-        // $divTile.mousedown(function(clickType){
-        //   console.log('mousedown firing')
-        //   if(clickType.which == 1){
-        //     console.log('click type is ' + clickType.which)
-        //   }else if(clickType.which == 2){
-        //     console.log('click type is ' + clickType.which)
-        //   }
-        // }) //$divTile.mousedown
         $divTile.appendTo('#row' + row);
     } // forEach( column )
   } // forEach( row )
-
-
-
 
   /// MAKE ARRAY OF UNIQUE BOMB IDs
   var newBombId = makeTileIdStr( randomTileAxisNum(), randomTileAxisNum() );
@@ -156,6 +162,7 @@ function makeBoard(){
       // console.log('pushed ' + newBombId)
     }
   } // while(arrayOfBombs.length < numOfBombs)
+
   /// MAKE BOMBS
   for(var b = 0; b < arrayOfBombs.length; b++){
     makeIntoBomb(arrayOfBombs[b])
