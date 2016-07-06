@@ -77,6 +77,21 @@ function isBomb(tileDOM){
   }
 }
 
+function clearZeroTiles(startTileIdStr){
+  console.log('clearZeroTiles( startTileIdStr ) - ' + startTileIdStr)
+  // update tilesLeftCounter
+}
+
+function timer(string){
+  console.log('timer(string)')
+  // start
+  // stop
+}
+
+function setRecord(num){
+  console.log('setRecord(num)')
+}
+
 // MAKE BOARD
 function makeBoard(){
   $('<div>', {class: 'timer', id: 'current-timer', text: '00:00'}).appendTo('#board')
@@ -85,7 +100,7 @@ function makeBoard(){
     html: '<span id="tilesLeftCounter">' + numOfNonBombs + '</span> / <span id="flagsLeftCounter">' + numOfBombs + '</span>'
   }).appendTo('#board')
   $('<div>', {class: 'timer', id: 'record-time', text: '00:00'}).appendTo('#board')
-  $('<button>', {id: 'reset-btn', text: 'Reset'}).appendTo('#board')
+  $('<button>', {id: 'reset-btn', text: 'New Game'}).appendTo('#board')
   $('<button>', {id: 'toggle-flag-btn', text: 'toggle flag'}).appendTo('#board')
 
   //resetBoard()
@@ -118,28 +133,41 @@ function makeBoard(){
             if( $(this).hasClass('flagged') ){
               $(this).removeClass('flagged')
               flagsLeftCounter++
-
             } else{
               $(this).addClass('flagged')
               flagsLeftCounter--
             }
             $('#flagsLeftCounter').html(flagsLeftCounter)
-            console.log(flagsLeftCounter)
+            // console.log(flagsLeftCounter)
           } else if( !$(this).hasClass('flagged') ){
 
             if( $(this).html() == '-1' ){ // is bomb
               $(this).addClass('tile-bomb')
-
+              $(this).removeClass('tile-hidden')
+              timer('stop')
               alert( 'tile ' + $(this).attr('id') + ' is a bomb, you lose')
             } else if( $(this).html() == '0' ){ // is zero
               $(this).removeClass('tile-hidden')
               $(this).addClass('tile-' + parseInt($(this).html()) )
+              --tilesLeftCounter
+              $('#tilesLeftCounter').text(tilesLeftCounter)
 
               clearZeroTiles( $(this).attr('id') )
+
+              if(tilesLeftCounter < 1){
+                alert('you won! yay!!')
+              }
+
             } else { // is num between 1 & 8
               console.log( 'cell value is ' + $(this).html() )
               $(this).removeClass('tile-hidden')
               $(this).addClass('tile-' + parseInt($(this).html()) )
+              --tilesLeftCounter
+              $('#tilesLeftCounter').text(tilesLeftCounter)
+
+              if(tilesLeftCounter < 1){
+                alert('you won! yay!!')
+              }
 
             }
 
