@@ -2,7 +2,7 @@
 var board = $('#board');
 var boardRows = 10;
 var boardColumns = 10;
-var numOfBombs = 98;
+var numOfBombs = 15;
 var numOfNonBombs = (boardRows * boardColumns) - numOfBombs
 // var tilesToClear
 console.log('numOfBombs ' + numOfBombs)
@@ -89,13 +89,10 @@ var stopwatch;
 function timer(string){
   switch(string){
     case 'start':
-      alert('starting timer')
-      console.log('calling tick()')
       stopwatch = setInterval(function(){ tick() }, 1000);
       break;
     case 'stop':
       clearInterval(stopwatch);
-      alert('stoping timer')
       break;
     case 'reset':
       stopwatchSeconds = 0;
@@ -228,5 +225,5 @@ function makeBoard(){
   tilesToClear = numOfNonBombs
 
   timer('start')
-  
+
 } makeBoard()
