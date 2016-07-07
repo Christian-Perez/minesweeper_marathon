@@ -57,6 +57,17 @@ function isBomb(tileDOM){
   }
 }
 
+function triggerTileById(tileIdStr){
+  console.log('tileIdStr: ' + tileIdStr)
+  $('#' + tileIdStr).addClass('clicked')
+  $('#' + tileIdStr).removeClass('tile-hidden')
+  $('#' + tileIdStr).addClass('tile-' + parseInt($('#' + tileIdStr).html()) )
+  --tilesLeftCounter
+  $('#tilesLeftCounter').text(tilesLeftCounter)
+}
+
+/// /// triggerTileById() /// ///
+
 function clearZeroTiles(zeroTileIdStr){
   // clears all adjacent tiles that are 'zeroTiles' including tiles touching diagonally
 
@@ -65,12 +76,11 @@ function clearZeroTiles(zeroTileIdStr){
   for (var p = 0; p < path.length; p++){
     var $tileInFocus = $( '#' + traverseTiles(zeroTileIdStr, path[p]) )
     if( $tileInFocus.html() == '0' ){
-
       console.log('the adjacent tile ' + path[p] + ' from this one is zero')
-
-
       adjacentZeroTilesStrArr.push( $tileInFocus.attr('id') )
       console.log(adjacentZeroTilesStrArr)
+    } else {
+      triggerTileById($tileInFocus.attr('id'))
     }
   }
 
@@ -157,6 +167,7 @@ function makeBoard(){
   /// FOR EVERY TILE ON THE BOARD...
         $divTile.click(function(){
           /// is flag-toggle active?
+
           if(flagToggle){
             if( $(this).hasClass('flagged') ){
               $(this).removeClass('flagged')
@@ -185,11 +196,8 @@ function makeBoard(){
               clearZeroTiles( $(this).attr('id') )
 
             } else { // is num between 1 & 8
-              $(this).addClass('clicked')
-              $(this).removeClass('tile-hidden')
-              $(this).addClass('tile-' + parseInt($(this).html()) )
-              --tilesLeftCounter
-              $('#tilesLeftCounter').text(tilesLeftCounter)
+              console.log($(this).attr('id'))
+              triggerTileById( $(this).attr('id') )
 
               if(tilesLeftCounter < 1){
                 alert('you won! yay!!')
