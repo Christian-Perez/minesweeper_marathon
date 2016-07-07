@@ -2,11 +2,9 @@
 var board = $('#board');
 var boardRows = 10;
 var boardColumns = 10;
-var numOfBombs = 15;
+var numOfBombs = 3;
 var numOfNonBombs = (boardRows * boardColumns) - numOfBombs
 // var tilesToClear
-console.log('numOfBombs ' + numOfBombs)
-console.log('numOfNonBombs: ' + numOfNonBombs)
 
 function randomTileAxisNum(){
   // * has to adapt to different board sizes
@@ -16,6 +14,7 @@ function randomTileAxisNum(){
 
 function makeTileIdStr(row, col){ // max board size 100x
   function makeAxisStr(num){
+
     if(num < 10){
       return ( '0' + num )
     }else{
@@ -25,16 +24,12 @@ function makeTileIdStr(row, col){ // max board size 100x
   return makeAxisStr(row) + makeAxisStr(col)
 } // makeTileIdStr(row, col)
 
-function makeIntoBomb(tileIdStr){
-  // $('#' + tileIdStr).css('background-color', 'orange')
-  $('#' + tileIdStr).html('-1')
 
-  var bombRowNum = parseInt(tileIdStr.slice(0, 2))
-  var bombColNum = parseInt(tileIdStr.slice(2))
-  /// UPDATE SURROUNDING TILES
+
+
+function traverseTiles(tileIdStr, directionStr){
   // define path directions
   var shift = {
-    // tested
     up: [-1, 0],
     down: [1, 0],
     left: [0, -1],
@@ -45,29 +40,26 @@ function makeIntoBomb(tileIdStr){
     dl: [1, -1],
     dr: [1, 1]
   }
-  // define path to targets
-  var path = ['up', 'left', 'down', 'down', 'right', 'right', 'up', 'up']
-  // start path at the bomb
-  var targetColNum = bombColNum;
-  var targetRowNum = bombRowNum;
-  // walk the path
-  for(var t = 0; t < path.length; t++){
-    var direction = path[t]
-    // take step in direction 't' (target)
-        targetRowNum += shift[direction][0]
-        targetColNum += shift[direction][1]
-    // define tile to modify
-    var targetId = makeTileIdStr(targetRowNum, targetColNum)
-    var $targetTile = $('#' + targetId);
-    if($targetTile.html() == '-1'){
-      // console.log('target found bomb @ ' + targetId)
-    }else{
-      // $targetTile.css('background-color', 'purple')
-      // looks like it breaks, but it's a visual hiccup
-      $targetTile.html(parseInt($targetTile.html()) + 1)
-    }
-  } // for( pathThroughTargets )
-} // MAKE INTO BOMB ()
+
+  // start at titleIdStr
+  console.log('parsing tileIdStr: ' + tileIdStr)
+  var targetRowNum = parseInt(tileIdStr.slice(0, 2))
+    console.log('targetRowNum: ' + targetRowNum)
+  var targetColNum = parseInt(tileIdStr.slice(2))
+    console.log('targetColNum: ' + targetColNum)
+  //shift tile focus
+    console.log(directionStr)
+  targetRowNum += shift[directionStr][0]
+    console.log('shift >> targetRowNum: ' + targetRowNum)
+  targetColNum += shift[directionStr][1]
+    console.log('shift >> targetColNum: ' + targetColNum)
+    console.log('makeTileIdStr: ' + makeTileIdStr(targetRowNum, targetColNum))
+  return makeTileIdStr(targetRowNum, targetColNum)
+} // traverseTile(tileIdStr, directionStr)
+
+
+
+
 
 function isBomb(tileDOM){
   if( tileDOM.html() == -1 ){
@@ -86,6 +78,7 @@ function clearZeroTiles(startTileIdStr){
 
 var stopwatchSeconds = 0;
 var stopwatch;
+
 function timer(string){
   switch(string){
     case 'start':
@@ -100,10 +93,6 @@ function timer(string){
       break;
   } // switch
 } // timer(string)
-// // // // //
-// function tick(){
-//   setInterval(function(){ console.log('stopwatchSeconds') }, 1000);
-// }
 
 function tick(){
   ++stopwatchSeconds
@@ -120,8 +109,6 @@ function tick(){
     // console.log(seconds)
     $('#current-timer').html(minutes + ':' + seconds)
   }
-
-/// /// /// /// ///
 
 function setRecord(num){
   console.log('setRecord(num)')
@@ -227,3 +214,30 @@ function makeBoard(){
   timer('start')
 
 } makeBoard()
+
+function makeIntoBomb(tileIdStr){
+  /// function concerns self with ONE bomb && recognizes & ignores adjacent bombs
+
+  //make tile at index tileIdStr into bomb
+
+  console.log('** MAKING BOMB @ ' + tileIdStr)
+  $('#' + tileIdStr).html('-1')
+  // define path to check tiles around bomb
+  var path = ['up', 'ur', 'right', 'dr', 'down', 'dl', 'left', 'ul']
+  // start of path = @bomb
+
+  var $targetTile = $('#' + tileIdStr)
+  for(var d = 0; d < path.length; d++){ // 'd' for direction
+    targetTileIdStr = traverseTiles(tileIdStr, path[d])
+    // console.log(targetTileIdStr)
+    $targetTile = $('#' + targetTileIdStr)
+
+    // console.log('isBomb()  - ' + isBomb($targetTile))
+    if( !isBomb($targetTile) ){
+      $targetTile.html(parseInt($targetTile.html()) + 1)
+      $targetTile.css('background-color', 'purple')
+    }
+  } // for( pathThroughTargets )
+  console.log('end cycle')
+
+} // MAKE INTO BOMB ()
