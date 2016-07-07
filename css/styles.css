@@ -67,7 +67,7 @@ body {
   color: rgb(255, 100, 100)
 }
 .tile-hidden {
-  /*color: transparent;*/
+  color: transparent;
 }
 .tile-bomb {
   color: black;

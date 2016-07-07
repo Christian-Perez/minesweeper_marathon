@@ -2,9 +2,9 @@
 var board = $('#board');
 var boardRows = 10;
 var boardColumns = 10;
-var numOfBombs = 3;
+var numOfBombs = 15;
 var numOfNonBombs = (boardRows * boardColumns) - numOfBombs
-// var tilesToClear
+var tilesLeftCounter // used by makeBoard() & clearZeroTiles()
 
 function randomTileAxisNum(){
   // * has to adapt to different board sizes
@@ -24,9 +24,6 @@ function makeTileIdStr(row, col){ // max board size 100x
   return makeAxisStr(row) + makeAxisStr(col)
 } // makeTileIdStr(row, col)
 
-
-
-
 function traverseTiles(tileIdStr, directionStr){
   // define path directions
   var shift = {
@@ -42,24 +39,20 @@ function traverseTiles(tileIdStr, directionStr){
   }
 
   // start at titleIdStr
-  console.log('parsing tileIdStr: ' + tileIdStr)
+
   var targetRowNum = parseInt(tileIdStr.slice(0, 2))
-    console.log('targetRowNum: ' + targetRowNum)
+
   var targetColNum = parseInt(tileIdStr.slice(2))
-    console.log('targetColNum: ' + targetColNum)
+
   //shift tile focus
-    console.log(directionStr)
+
   targetRowNum += shift[directionStr][0]
-    console.log('shift >> targetRowNum: ' + targetRowNum)
+
   targetColNum += shift[directionStr][1]
-    console.log('shift >> targetColNum: ' + targetColNum)
-    console.log('makeTileIdStr: ' + makeTileIdStr(targetRowNum, targetColNum))
+
+
   return makeTileIdStr(targetRowNum, targetColNum)
 } // traverseTile(tileIdStr, directionStr)
-
-
-
-
 
 function isBomb(tileDOM){
   if( tileDOM.html() == -1 ){
@@ -69,12 +62,14 @@ function isBomb(tileDOM){
   }
 }
 
-function clearZeroTiles(startTileIdStr){
-  console.log('clearZeroTiles( startTileIdStr ) - ' + startTileIdStr)
-  // update tilesLeftCounter
-}
+function clearZeroTiles(zeroTileIdStr){
 
-/// /// /// /// ///
+  $('#' + zeroTileIdStr).removeClass('tile-hidden')
+  $('#' + zeroTileIdStr).addClass('tile-0')
+  --tilesLeftCounter
+  $('#tilesLeftCounter').text(tilesLeftCounter)
+
+}
 
 var stopwatchSeconds = 0;
 var stopwatch;
@@ -114,7 +109,6 @@ function setRecord(num){
   console.log('setRecord(num)')
 }
 
-// MAKE BOARD
 function makeBoard(){
   $('<div>', {class: 'timer', id: 'current-timer', text: '00:00'}).appendTo('#board')
   $('<div>', {id: 'bomb-toggle',
@@ -130,7 +124,7 @@ function makeBoard(){
     makeBoard()
   })
 
-  var tilesLeftCounter = numOfNonBombs;
+  tilesLeftCounter = numOfNonBombs;
   var flagsLeftCounter = numOfBombs;
   var flagToggle = false
   $('#toggle-flag-btn').click(function(){
@@ -149,32 +143,36 @@ function makeBoard(){
       var $divTile = $('<div>', { class: 'tile tile-hidden', id: makeTileIdStr(row, col), text: 0 } );
   /// FOR EVERY TILE ON THE BOARD...
         $divTile.click(function(){
+          /// is flag-toggle active?
           if(flagToggle){
             if( $(this).hasClass('flagged') ){
               $(this).removeClass('flagged')
               flagsLeftCounter++
-            } else{
+
+            } else {
               $(this).addClass('flagged')
               flagsLeftCounter--
             }
-            $('#flagsLeftCounter').html(flagsLeftCounter)
-            // console.log(flagsLeftCounter)
-          } else if( !$(this).hasClass('flagged') ){
 
-            if( $(this).html() == '-1' ){ // is bomb
+            $('#flagsLeftCounter').html(flagsLeftCounter)
+
+            ///
+          } else if( !$(this).hasClass('flagged') ){
+            // is bomb
+            if( $(this).html() == '-1' ){
               $(this).addClass('tile-bomb')
               $(this).removeClass('tile-hidden')
               timer('stop')
               alert( 'tile ' + $(this).attr('id') + ' is a bomb, you lose')
-            } else if( $(this).html() == '0' ){ // is zero
-              $(this).removeClass('tile-hidden')
-              $(this).addClass('tile-' + parseInt($(this).html()) )
-              --tilesLeftCounter
-              $('#tilesLeftCounter').text(tilesLeftCounter)
 
+            } else if($(this).hasClass('clicked') ){
+              alert('This tile has already been selected, select another.')
+
+            } else if( $(this).html() == '0' ){
               clearZeroTiles( $(this).attr('id') )
 
             } else { // is num between 1 & 8
+              $(this).addClass('clicked')
               $(this).removeClass('tile-hidden')
               $(this).addClass('tile-' + parseInt($(this).html()) )
               --tilesLeftCounter
@@ -217,27 +215,17 @@ function makeBoard(){
 
 function makeIntoBomb(tileIdStr){
   /// function concerns self with ONE bomb && recognizes & ignores adjacent bombs
-
   //make tile at index tileIdStr into bomb
-
-  console.log('** MAKING BOMB @ ' + tileIdStr)
   $('#' + tileIdStr).html('-1')
   // define path to check tiles around bomb
   var path = ['up', 'ur', 'right', 'dr', 'down', 'dl', 'left', 'ul']
   // start of path = @bomb
-
   var $targetTile = $('#' + tileIdStr)
   for(var d = 0; d < path.length; d++){ // 'd' for direction
     targetTileIdStr = traverseTiles(tileIdStr, path[d])
-    // console.log(targetTileIdStr)
     $targetTile = $('#' + targetTileIdStr)
-
-    // console.log('isBomb()  - ' + isBomb($targetTile))
     if( !isBomb($targetTile) ){
       $targetTile.html(parseInt($targetTile.html()) + 1)
-      $targetTile.css('background-color', 'purple')
     }
   } // for( pathThroughTargets )
-  console.log('end cycle')
-
 } // MAKE INTO BOMB ()
