@@ -55,7 +55,6 @@ body {
 
   background-color: rgb(180, 180, 180);
   text-align: center;
-  /*vertical-align: middle;*/
 
 }
 .tile:hover {
@@ -64,7 +63,7 @@ body {
 /*order is important, before tileHidden & other tile properties*/
 .flagged {
   background-color: rgb(50, 50 , 50);
-  color: rgb(255, 100, 100)
+  color: rgb(255, 200, 100)
 }
 .tile-hidden {
   /*color: transparent;*/

@@ -5,6 +5,8 @@ var boardColumns = 10;
 var numOfBombs = 15;
 var numOfNonBombs = (boardRows * boardColumns) - numOfBombs
 var tilesLeftCounter // used by makeBoard() & clearZeroTiles()
+var stopwatchSeconds = 0;
+var stopwatch;
 
 function randomTileAxisNum(){
   // * has to adapt to different board sizes
@@ -69,46 +71,25 @@ function triggerTileById(tileIdStr){
 
 function clearZeroTiles(zeroTileIdStr){
   // clears all adjacent tiles that are 'zeroTiles' including tiles touching diagonally
-
   var path = ['up', 'ur', 'right', 'dr', 'down', 'dl', 'left', 'ul']
-  var zeroTilesStrArr = []
-  for (var p = 0; p < path.length; p++){
-    var $tileInFocus = $( '#' + traverseTiles(zeroTileIdStr, path[p]) )
-    // console.log( $( '#' + traverseTiles(zeroTileIdStr, path[p]) ) )
-
-    if( $tileInFocus.html() == '0' ){
-      // html = '0'
-      if( !$tileInFocus.hasClass('clicked') ){
-        triggerTileById( $tileInFocus.attr('id') )
-        // console.log('checked ' + $tileInFocus.attr('id') + ' for checked-for-0 class')
-        // console.log( $tileInFocus.hasClass('checked-for-0') )
-      } else {
-        // console.log('checked ' + $tileInFocus.attr('id') + ' for checked-for-0 class')
-        // console.log( $tileInFocus.hasClass('checked-for-0') )
-        console.log('already clicked tile ' + $tileInFocus.attr('id'))
+  var zeroTilesArr = [zeroTileIdStr]
+  for(var t = 0; t < zeroTilesArr.length; t++){
+    triggerTileById(zeroTilesArr[t])
+  //   console.log('*1*  for zeroTilesArr.length: ' + zeroTilesArr.length)
+  //   $tileInFocus = $('#' + zeroTilesArr[t])
+    for (var d = 0; d < path.length; d++){
+      var targetTileId = traverseTiles(zeroTilesArr[t], path[d])
+      var $targetTile = $('#' + targetTileId)
+      if( $targetTile.html() == '0' && !$targetTile.hasClass('clicked')){
+        console.log('triggering ' + targetTileId)
+        triggerTileById(targetTileId)
+        console.log('add tile with id ' + targetTileId + ' to array')
+        zeroTilesArr.push(targetTileId)
       }
-    //   console.log('the adjacent tile ' + path[p] + ' from this one is zero')
-    //   zeroTilesStrArr.push( $tileInFocus.attr('id') )
-    //   // console.log(zeroTilesStrArr)
-    } else {
-      // html != '0'
-    //   triggerTileById($tileInFocus.attr('id'))
-    //   console.log('clearZeroTiles, tileInFocus: ' + $tileInFocus.attr('id'))
-    }
-  }
-
-
-
-  $('#' + zeroTileIdStr).addClass('clicked')
-  $('#' + zeroTileIdStr).removeClass('tile-hidden')
-  $('#' + zeroTileIdStr).addClass('tile-0')
-  --tilesLeftCounter
-  $('#tilesLeftCounter').text(tilesLeftCounter)
-
-}
-
-var stopwatchSeconds = 0;
-var stopwatch;
+    } // for(path.length)
+  //   console.log('*6*  zeroTilesArr.length: ' + zeroTilesArr.length)
+  } // for zeroTilesAr.length
+} // clearZeroTiles(zeroTileIdStr)
 
 function timer(string){
   switch(string){
