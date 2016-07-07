@@ -39,17 +39,12 @@ function traverseTiles(tileIdStr, directionStr){
   }
 
   // start at titleIdStr
-
   var targetRowNum = parseInt(tileIdStr.slice(0, 2))
-
   var targetColNum = parseInt(tileIdStr.slice(2))
 
   //shift tile focus
-
   targetRowNum += shift[directionStr][0]
-
   targetColNum += shift[directionStr][1]
-
 
   return makeTileIdStr(targetRowNum, targetColNum)
 } // traverseTile(tileIdStr, directionStr)
@@ -63,7 +58,25 @@ function isBomb(tileDOM){
 }
 
 function clearZeroTiles(zeroTileIdStr){
+  // clears all adjacent tiles that are 'zeroTiles' including tiles touching diagonally
 
+  var path = ['up', 'ur', 'right', 'dr', 'down', 'dl', 'left', 'ul']
+  var adjacentZeroTilesStrArr = []
+  for (var p = 0; p < path.length; p++){
+    var $tileInFocus = $( '#' + traverseTiles(zeroTileIdStr, path[p]) )
+    if( $tileInFocus.html() == '0' ){
+
+      console.log('the adjacent tile ' + path[p] + ' from this one is zero')
+
+
+      adjacentZeroTilesStrArr.push( $tileInFocus.attr('id') )
+      console.log(adjacentZeroTilesStrArr)
+    }
+  }
+
+
+
+  $('#' + zeroTileIdStr).addClass('clicked')
   $('#' + zeroTileIdStr).removeClass('tile-hidden')
   $('#' + zeroTileIdStr).addClass('tile-0')
   --tilesLeftCounter
