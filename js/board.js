@@ -58,29 +58,42 @@ function isBomb(tileDOM){
 }
 
 function triggerTileById(tileIdStr){
-  console.log('tileIdStr: ' + tileIdStr)
+ if( !$('#' + tileIdStr).hasClass('clicked')){
   $('#' + tileIdStr).addClass('clicked')
   $('#' + tileIdStr).removeClass('tile-hidden')
   $('#' + tileIdStr).addClass('tile-' + parseInt($('#' + tileIdStr).html()) )
   --tilesLeftCounter
   $('#tilesLeftCounter').text(tilesLeftCounter)
-}
-
-/// /// triggerTileById() /// ///
+  }
+} // triggerTileById
 
 function clearZeroTiles(zeroTileIdStr){
   // clears all adjacent tiles that are 'zeroTiles' including tiles touching diagonally
 
   var path = ['up', 'ur', 'right', 'dr', 'down', 'dl', 'left', 'ul']
-  var adjacentZeroTilesStrArr = []
+  var zeroTilesStrArr = []
   for (var p = 0; p < path.length; p++){
     var $tileInFocus = $( '#' + traverseTiles(zeroTileIdStr, path[p]) )
+    // console.log( $( '#' + traverseTiles(zeroTileIdStr, path[p]) ) )
+
     if( $tileInFocus.html() == '0' ){
-      console.log('the adjacent tile ' + path[p] + ' from this one is zero')
-      adjacentZeroTilesStrArr.push( $tileInFocus.attr('id') )
-      console.log(adjacentZeroTilesStrArr)
+      // html = '0'
+      if( !$tileInFocus.hasClass('clicked') ){
+        triggerTileById( $tileInFocus.attr('id') )
+        // console.log('checked ' + $tileInFocus.attr('id') + ' for checked-for-0 class')
+        // console.log( $tileInFocus.hasClass('checked-for-0') )
+      } else {
+        // console.log('checked ' + $tileInFocus.attr('id') + ' for checked-for-0 class')
+        // console.log( $tileInFocus.hasClass('checked-for-0') )
+        console.log('already clicked tile ' + $tileInFocus.attr('id'))
+      }
+    //   console.log('the adjacent tile ' + path[p] + ' from this one is zero')
+    //   zeroTilesStrArr.push( $tileInFocus.attr('id') )
+    //   // console.log(zeroTilesStrArr)
     } else {
-      triggerTileById($tileInFocus.attr('id'))
+      // html != '0'
+    //   triggerTileById($tileInFocus.attr('id'))
+    //   console.log('clearZeroTiles, tileInFocus: ' + $tileInFocus.attr('id'))
     }
   }
 
@@ -150,6 +163,7 @@ function makeBoard(){
   tilesLeftCounter = numOfNonBombs;
   var flagsLeftCounter = numOfBombs;
   var flagToggle = false
+
   $('#toggle-flag-btn').click(function(){
     // change click behavior if toggle-flag-btn has been clicked
     flagToggle == true ? flagToggle = false : flagToggle = true
