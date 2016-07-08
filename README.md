@@ -8,7 +8,7 @@ players can click tiles, one at a time to reveal whether or not there is a bomb 
 When a player has clicked all of the tiles on a board that are NOT bombs, they have won.
 
 ##Gameplay Minesweeper Marathon
-When finished, minesweeper mararathon wiill start you off with a 3x3 board and each time you clear a board, it will increase in size. 
+When finished, minesweeper mararathon wiill start you off with a 3x3 board and each time you clear a board, the next board will have 1 more column and 1 more row of tiles relative to the last board. 
 You will start with 60 seconds and get 30 seconds added to your timer each time a board is cleared. 
 score will be based on how many non-zero tiles are cleared. 
 
