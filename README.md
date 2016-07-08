@@ -24,6 +24,5 @@ if you'd like to play this game locally on your own computer, simply clone the r
 when starting a new game, before the current game is finished, the timer will count down faster than it should, the issue compounds on itself with each iteration.
 
 #future features & project progress
-<a url='https://trello.com/b/7SkwmC8s/minesweeper-trailblazer'>Trello</a>
+https://trello.com/b/7SkwmC8s/minesweeper-trailblazer
 
-<!-- <a href="" rel="some text"><img src="/path/to/file" alt="" /></a> -->
