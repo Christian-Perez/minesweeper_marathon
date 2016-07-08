@@ -27,5 +27,5 @@ when starting a new game, before the current game is finished, the timer will co
 https://trello.com/b/7SkwmC8s/minesweeper-trailblazer
 
 ###Play In Browser
-https://github.com/chrisdillon92/minesweeper_marathon
+https://chrisdillon92.github.io/minesweeper_marathon/
 
