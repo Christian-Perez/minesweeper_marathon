@@ -6,6 +6,7 @@ var numOfBombs = 15;
 var numOfNonBombs = (boardRows * boardColumns) - numOfBombs
 var tilesLeftCounter // used by makeBoard() & clearZeroTiles()
 var stopwatchSeconds = 0;
+var highScoreSeconds = 0;
 var stopwatch;
 
 function randomTileAxisNum(){
@@ -75,19 +76,14 @@ function clearZeroTiles(zeroTileIdStr){
   var zeroTilesArr = [zeroTileIdStr]
   for(var t = 0; t < zeroTilesArr.length; t++){
     triggerTileById(zeroTilesArr[t])
-  //   console.log('*1*  for zeroTilesArr.length: ' + zeroTilesArr.length)
-  //   $tileInFocus = $('#' + zeroTilesArr[t])
     for (var d = 0; d < path.length; d++){
       var targetTileId = traverseTiles(zeroTilesArr[t], path[d])
       var $targetTile = $('#' + targetTileId)
       if( $targetTile.html() == '0' && !$targetTile.hasClass('clicked')){
-        console.log('triggering ' + targetTileId)
         triggerTileById(targetTileId)
-        console.log('add tile with id ' + targetTileId + ' to array')
         zeroTilesArr.push(targetTileId)
       }
     } // for(path.length)
-  //   console.log('*6*  zeroTilesArr.length: ' + zeroTilesArr.length)
   } // for zeroTilesAr.length
 } // clearZeroTiles(zeroTileIdStr)
 
@@ -106,32 +102,40 @@ function timer(string){
   } // switch
 } // timer(string)
 
+function formatNum(num){
+  if(num < 10){
+    return ( '0' + num )
+  }else{
+    return ( '' + num )
+  }
+}
+
 function tick(){
   ++stopwatchSeconds
-  function formatNum(num){
-    if(num < 10){
-      return ( '0' + num )
-    }else{
-      return ( '' + num )
-    }
-  }
+
     var minutes = formatNum( Math.floor(stopwatchSeconds / 60) )
-    // console.log(minutes)
     var seconds = formatNum( stopwatchSeconds % 60 )
-    // console.log(seconds)
     $('#current-timer').html(minutes + ':' + seconds)
   }
 
-function setRecord(num){
-  console.log('setRecord(num)')
+function setRecord(){
+  if (stopwatchSeconds > highScoreSeconds){
+    console.log('highScoreSeconds > stopwatchSeconds')
+    highScoreSeconds = stopwatchSeconds
+  }
+  var minutes = formatNum( Math.floor(highScoreSeconds / 60) )
+  var seconds = formatNum( highScoreSeconds % 60 )
+  $('#record-timer').html(minutes + ':' + seconds)
+  console.log('setting Record ')
 }
 
 function makeBoard(){
+  // create elements above game board
   $('<div>', {class: 'timer', id: 'current-timer', text: '00:00'}).appendTo('#board')
   $('<div>', {id: 'tile-counter',
     html: '<span id="tilesLeftCounter">' + numOfNonBombs + '</span><span> / </span><span id="flagsLeftCounter">' + numOfBombs + '</span>'
   }).appendTo('#board')
-  $('<div>', {class: 'timer', id: 'record-time', text: '00:00'}).appendTo('#board')
+  $('<div>', {class: 'timer', id: 'record-timer', text: '00:00'}).appendTo('#board')
   $('<div>', {id: 'reset-btn', text: 'New Game'}).appendTo('#board')
   $('<div>', {id: 'toggle-flag-btn', text: 'Toggle Flag'}).appendTo('#board')
 
@@ -139,11 +143,14 @@ function makeBoard(){
   $('#reset-btn').click(function(){
     $('#board').empty()
     makeBoard()
+    setRecord()
   })
 
+  // set values of counters
   tilesLeftCounter = numOfNonBombs;
   var flagsLeftCounter = numOfBombs;
   var flagToggle = false
+
 
   $('#toggle-flag-btn').click(function(){
     // change click behavior if toggle-flag-btn has been clicked
@@ -180,11 +187,15 @@ function makeBoard(){
             ///
           } else if( !$(this).hasClass('flagged') ){
             // is bomb
+
             if( $(this).html() == '-1' ){
               $(this).addClass('tile-bomb')
               $(this).removeClass('tile-hidden')
               timer('stop')
+
+              if(stopwatchSeconds > highScoreSeconds){setRecord()}
               alert( 'tile ' + $(this).attr('id') + ' is a bomb, you lose')
+              stopwatchSeconds = 0
 
             } else if($(this).hasClass('clicked') ){
               alert('This tile has already been selected, select another.')
