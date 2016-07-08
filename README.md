@@ -1,11 +1,17 @@
 #Minesweeper Marathon
 
-##Gameplay
+##Gameplay Minesweeper
 A game of minesweeper starts with a two dimensional array of tiles, some of which contain a bomb that will explode when clicked
 
 players can click tiles, one at a time to reveal whether or not there is a bomb under the tile
 
 When a player has clicked all of the tiles on a board that are NOT bombs, they have won.
+
+##Gameplay Minesweeper Marathon
+When finished, minesweeper mararathon wiill start you off with a 3x3 board and each time you clear a board, it will increase in size. 
+You will start with 60 seconds and get 30 seconds added to your timer each time a board is cleared. 
+score will be based on how many non-zero tiles are cleared. 
+
 
 
 ##Tools Used In Development
