@@ -148,10 +148,12 @@ function makeBoard(){
   $('#toggle-flag-btn').click(function(){
     // change click behavior if toggle-flag-btn has been clicked
     flagToggle == true ? flagToggle = false : flagToggle = true
-    if( $(this).hasClass( 'flagged' ) ){
+    if( $('#toggle-flag-btn').hasClass( 'flagged' ) ){
       $('#toggle-flag-btn').removeClass('flagged')
+      $('#toggle-flag-btn').css('background-color', 'rgb(90, 180, 210)')
     } else {
       $('#toggle-flag-btn').addClass('flagged')
+      $('#toggle-flag-btn').css('background-color', 'rgb(50, 50, 50)')
     }
   }) // click( #toggle-flag-btn )
 
