@@ -71,17 +71,22 @@ function triggerTileById(tileIdStr){
 } // triggerTileById
 
 function clearZeroTiles(zeroTileIdStr){
-  // clears all adjacent tiles that are 'zeroTiles' including tiles touching diagonally
+  /// clears all adjacent tiles that are 'zeroTiles' including tiles touching diagonally
   var path = ['up', 'ur', 'right', 'dr', 'down', 'dl', 'left', 'ul']
   var zeroTilesArr = [zeroTileIdStr]
+  // for every zero tile that is found..
   for(var t = 0; t < zeroTilesArr.length; t++){
     triggerTileById(zeroTilesArr[t])
+    // look at all adjacent tiles
     for (var d = 0; d < path.length; d++){
       var targetTileId = traverseTiles(zeroTilesArr[t], path[d])
       var $targetTile = $('#' + targetTileId)
       if( $targetTile.html() == '0' && !$targetTile.hasClass('clicked')){
         triggerTileById(targetTileId)
         zeroTilesArr.push(targetTileId)
+      }
+      if( parseInt( $targetTile.html() ) > 0 && !$targetTile.hasClass('clicked')){
+        triggerTileById(targetTileId)
       }
     } // for(path.length)
   } // for zeroTilesAr.length
