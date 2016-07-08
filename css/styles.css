@@ -1,5 +1,6 @@
 body {
   background-color: grey;
+  font-family: 'Titillium Web', sans-serif;
 }
 #gameWindow {
   background-color: rgb(90, 180, 210);
@@ -9,36 +10,56 @@ body {
 }
 #hud {
   display: block;
-  background-color: purple;
 }
 /* HUD */
-.timer, #bomb-toggle {
+.timer, #tile-counter {
   display: inline-block;
   margin: 1px 0 1px 0;
 }
 .timer {
   height: 58px;
-  width: 35%;
+  width: 240px;
   background-color: rgb(90, 180, 210);
+  font-size: 36px;
+  line-height: 58px;
+  color: rgb(230, 230, 230);
 }
-#bomb-toggle {
-  width: 25%;
+#tile-counter {
+  width: 118px;
+  font-size: 30px;
 }
-/* hud */
+#toggle-flag-btn, #reset-btn {
+  display: inline-block;
+  width: 290px;
+  color: rgb(230, 230, 230);
+  background-color: rgb(90, 180, 210);
+  border: 1px solid rgb(230, 230, 230);
+  padding: 4px;
+}
+#toggle-flag-btn {
+  /*margin-left: 25%;*/
+}
+
+#toggle-flag-btn:hover,
+#reset-btn:hover {
+  background-color: rgb(90, 180, 210);
+  border: 1px solid rgb(240, 240, 240);
+  color: rgb(210, 210, 210);
+}
 
 #board {
   display: inline-block;
   width: 600px;
   height: 100%;
-  background-color: rgb(224, 224, 224);
+  background-color: rgb(230, 230, 230);
   padding: 1px;
   margin: 20px;
 }
 #tilesLeftCounter {
-  color: green;
+  color: rgb(68, 125, 57);
 }
 #flagsLeftCounter{
-  color: red;
+  color: rgb(186, 24, 24);
 }
 .row{
   display: inline-block;
@@ -58,7 +79,7 @@ body {
 
 }
 .tile:hover {
-  background-color: rgba(100, 100, 200, .1);
+  background-color: rgb(200, 200, 200);
 }
 /*order is important, before tileHidden & other tile properties*/
 .flagged {
@@ -66,14 +87,14 @@ body {
   color: rgb(255, 200, 100)
 }
 .tile-hidden {
-  /*color: transparent;*/
+  color: transparent;
 }
 .tile-bomb {
   color: black;
   background-color: rgb(163, 0, 0);
 }
 .tile-0 {
-  background-color: orange;
+  background-color: rgb(247, 123, 40);
 }
 .tile-1 {
   background-color: rgb(0, 150, 224);
