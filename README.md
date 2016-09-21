@@ -1,5 +1,14 @@
 #Minesweeper Marathon
 
+###Play In Browser
+##Updated Version
+http://minesweeper-marathon.herokuapp.com/
+##Original Version
+https://chrisdillon92.github.io/minesweeper_marathon/
+
+###New Repo (work in progress)
+https://github.com/chrisdillon92/minesweeper_marathon_rails
+
 ###Gameplay Minesweeper
 A game of minesweeper starts with a two dimensional array of tiles, some of which contain a bomb that will explode when clicked
 
@@ -33,7 +42,4 @@ when starting a new game, before the current game is finished, the timer will co
 
 ###Future Features & Project Progress
 https://trello.com/b/7SkwmC8s/minesweeper-trailblazer
-
-###Play In Browser
-https://chrisdillon92.github.io/minesweeper_marathon/
 
